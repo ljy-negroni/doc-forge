@@ -10,6 +10,11 @@ doc-forge is designed for developer-client (乙方-甲方) collaboration scenari
 - Let clients participate in requirement definition through guided conversation
 - Turn ambiguous ideas into structured, professional documents
 - Auto-generate diagrams and visuals from confirmed requirements
+- Cover the full software development lifecycle (SDLC) — from problem definition to deliverables
+
+**Who is it for:**
+- **Developers (乙方)** — Use it as a structured tool to collect, organize, and deliver client requirements
+- **Non-technical clients (甲方)** — No software knowledge needed. Claude asks plain-language questions like "What problem does this solve?" and "Who will use it?", then turns answers into professional documents automatically
 
 ## Features
 
@@ -25,6 +30,9 @@ doc-forge is designed for developer-client (乙方-甲方) collaboration scenari
 
 ### Planned
 
+- [ ] **Software Lifecycle Guidance (SDLC Mode)** - For non-technical clients: guided problem definition, feasibility analysis, requirement elicitation using plain language — no jargon required
+- [ ] **Problem Definition Phase** - Help clients articulate "what problem are we solving?" through conversational prompts
+- [ ] **Requirement Analysis Phase** - Automatically convert client answers into structured requirement specifications
 - [ ] **Database Schema Design** - Define tables, fields, types, constraints, and relationships interactively; export as SQL DDL
 - [ ] **PPT Report Generation** - Auto-generate client presentation decks from confirmed requirements and diagrams
 - [ ] **More Diagram Types** - ER diagram, deployment diagram, component diagram
@@ -87,6 +95,7 @@ Currently under active optimization. Core pipeline (Q&A → document → diagram
 - [x] Multi-model image generation (gpt-image-1 / dall-e-3 / dall-e-2)
 - [x] Document compliance self-check
 - [x] Incremental update support
+- [ ] SDLC Mode — problem definition & requirement analysis for non-technical clients
 - [ ] Database schema design (interactive field definition + SQL export)
 - [ ] PPT report generation
 - [ ] ER diagram support
