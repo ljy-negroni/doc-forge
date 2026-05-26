@@ -1,42 +1,55 @@
 # doc-forge
 
-A Claude Code Skill — Full-pipeline toolkit for client-facing software engineering deliverables.
+A Claude Code Skill — Full-pipeline toolkit for turning conversations into professional software engineering deliverables.
 
 ## What is this
 
-doc-forge is designed for developer-client (乙方-甲方) collaboration scenarios. It helps developers guide clients through structured Q&A to clarify requirements, refine business logic, and design databases — then automatically generates all the "edge deliverables": requirement documents, architecture diagrams, promotional images, wireframes, and more.
+doc-forge bridges the gap between non-technical stakeholders and development teams. It guides anyone — including bosses and product managers with zero coding knowledge — through a friendly conversation, then automatically generates requirement documents, architecture diagrams, and promotional visuals.
 
 **Core philosophy:**
 - Let clients participate in requirement definition through guided conversation
 - Turn ambiguous ideas into structured, professional documents
 - Auto-generate diagrams and visuals from confirmed requirements
-- Cover the full software development lifecycle (SDLC) — from problem definition to deliverables
+- Cover the full software development lifecycle (SDLC)
 
 **Who is it for:**
+- **Non-technical stakeholders (甲方)** — Describe your idea in plain language. Claude asks questions like "What problem does this solve?" and "Who will use it?", then turns your answers into professional documents automatically
 - **Developers (乙方)** — Use it as a structured tool to collect, organize, and deliver client requirements
-- **Non-technical clients (甲方)** — No software knowledge needed. Claude asks plain-language questions like "What problem does this solve?" and "Who will use it?", then turns answers into professional documents automatically
+- **Teams** — Collaborate in real-time during meetings, generating documents and diagrams on the spot
 
 ## Features
 
-### Current
+### Intelligent Requirement Gathering
 
-- **Client-facing Structured Q&A** - 6-step guided conversation to help clients clarify: project goals, target users, core features, tech stack, data entities, and business flow
-- **Requirement Confirmation** - Auto-detect gaps and risks, prompt clients to supplement or confirm before generating deliverables
-- **Document Generation** - Requirement / Design / API documents with template validation and self-check
-- **PlantUML Diagrams** - DFD, Use Case, Activity, Sequence diagrams in PNG / SVG / PDF
-- **Database Design Assistance** - ER diagrams generated from data entities collected during Q&A
-- **Promotional Images** - Claude writes prompts, then calls OpenAI image models (gpt-image-1 / dall-e-3 / dall-e-2)
-- **Incremental Updates** - Re-run to update specific modules without regenerating everything
+- **Role-Based Conversation** — Choose your role (client / developer / collaborator) and the tool adapts its language and questions accordingly
+- **Free-Form Input** — Describe your project however you like: plain text, keywords, a reference product, or even a screenshot
+- **Smart Follow-Up Questions** — AI analyzes your description and generates numbered follow-up questions, with priority markers and batch answer support
+- **Conflict Detection** — Automatically detects contradictions in your requirements (e.g., "feature-rich" vs "minimal UI") and helps you resolve trade-offs
 
-### Planned
+### Document Generation
 
-- [ ] **Software Lifecycle Guidance (SDLC Mode)** - For non-technical clients: guided problem definition, feasibility analysis, requirement elicitation using plain language — no jargon required
-- [ ] **Problem Definition Phase** - Help clients articulate "what problem are we solving?" through conversational prompts
-- [ ] **Requirement Analysis Phase** - Automatically convert client answers into structured requirement specifications
-- [ ] **Database Schema Design** - Define tables, fields, types, constraints, and relationships interactively; export as SQL DDL
-- [ ] **PPT Report Generation** - Auto-generate client presentation decks from confirmed requirements and diagrams
-- [ ] **More Diagram Types** - ER diagram, deployment diagram, component diagram
-- [ ] **Multi-language Document Output** - Support both Chinese and English document generation
+- **Section-by-Section Refinement** — Generate a chapter outline first, then refine each section through an interactive loop with brainstorming, drafting, and confirmation
+- **Dual-Perspective Verification** — Optionally validate the document from both a client readability perspective and a developer feasibility perspective
+- **Self-Check & Polish** — Automatic review for terminology consistency, vague expressions, and missing acceptance criteria
+
+### Diagram Generation
+
+- **4 Diagram Types** — Data Flow Diagram (DFD), Use Case Diagram, Activity Diagram, Sequence Diagram
+- **Multiple Formats** — PNG (web), SVG (presentations), PDF (print)
+- **PlantUML Powered** — Source code preserved alongside rendered images
+
+### Visual Assets
+
+- **Banner Images** — Project branding with tagline and visual style
+- **Feature Showcase** — Card-style illustrations of core features
+- **UI Wireframes** — Minimal annotated wireframe mockups
+- **Multi-Model Support** — Choose from gpt-image-1, dall-e-3, or dall-e-2
+
+### Project Management
+
+- **Unified Output Directory** — All deliverables (documents, diagrams, images) organized in a single project folder
+- **Timestamped Versions** — Each run creates timestamped artifacts for traceability
+- **Incremental Updates** — Re-run to update specific modules without regenerating everything
 
 ## Quick Start
 
@@ -62,20 +75,22 @@ cp skill/SKILL.md ~/.claude/commands/doc-forge.md
 ## Typical Workflow
 
 ```
-1. Developer runs /doc-forge in a meeting with the client
-2. Claude asks structured questions → client answers → developer supplements
-3. Auto-generate requirement document → client reviews and confirms
-4. Auto-generate architecture diagrams (DFD, Use Case, Activity, Sequence)
-5. Auto-generate database ER diagram based on discussed data entities
-6. Auto-generate promotional images and UI wireframes
-7. All deliverables saved with timestamps, ready to send to the client
+1. Choose your role: client, developer, or collaborator
+2. Describe your project freely — in any format you like
+3. Answer follow-up questions — skip what you're unsure about
+4. Resolve any detected conflicts in your requirements
+5. Review the document section by section — confirm or modify each part
+6. Optionally verify from client and developer perspectives
+7. Auto-generate architecture diagrams (DFD, Use Case, Activity, Sequence)
+8. Auto-generate promotional images and UI wireframes
+9. All deliverables saved in one folder, ready to share
 ```
 
 ## Project Structure
 
 ```
 doc-forge/
-├── skill/SKILL.md              # Skill main file (Q&A flow + tool invocation)
+├── skill/SKILL.md              # Skill definition (conversation flow + tool invocation)
 ├── scripts/
 │   ├── plantuml-render.js      # PlantUML encoding + rendering (PNG/SVG/PDF)
 │   └── image-generate.js       # Multi-model image generation
@@ -88,15 +103,19 @@ doc-forge/
 
 ## Status
 
-Currently under active optimization. Core pipeline (Q&A → document → diagrams → images) is functional.
+Core pipeline is fully functional.
 
-- [x] Structured Q&A with client-friendly prompts
+- [x] Role-based conversation (client / developer / collaborator)
+- [x] Free-form project description with smart follow-up questions
+- [x] Conflict detection and trade-off resolution
+- [x] Section-by-section document refinement
+- [x] Dual-perspective document verification
 - [x] PlantUML diagram rendering (PNG / SVG / PDF)
 - [x] Multi-model image generation (gpt-image-1 / dall-e-3 / dall-e-2)
-- [x] Document compliance self-check
+- [x] Unified output directory with timestamped versions
 - [x] Incremental update support
-- [ ] SDLC Mode — problem definition & requirement analysis for non-technical clients
+- [ ] SDLC Mode — problem definition & feasibility analysis for non-technical users
 - [ ] Database schema design (interactive field definition + SQL export)
 - [ ] PPT report generation
 - [ ] ER diagram support
-- [ ] OpenAI API proxy compatibility
+- [ ] Multi-language document output (Chinese / English)
