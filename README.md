@@ -31,6 +31,7 @@ doc-forge bridges the gap between non-technical stakeholders and development tea
 - **Section-by-Section Refinement** — Generate a chapter outline first, then refine each section through an interactive loop with brainstorming, drafting, and confirmation
 - **Dual-Perspective Verification** — Optionally validate the document from both a client readability perspective and a developer feasibility perspective
 - **Self-Check & Polish** — Automatic review for terminology consistency, vague expressions, and missing acceptance criteria
+- **Word Export** — Convert any generated Markdown document to `.docx` format, with all PlantUML diagrams embedded as inline images at their corresponding positions
 
 ### Diagram Generation
 
@@ -83,7 +84,8 @@ cp skill/SKILL.md ~/.claude/commands/doc-forge.md
 6. Optionally verify from client and developer perspectives
 7. Auto-generate architecture diagrams (DFD, Use Case, Activity, Sequence)
 8. Auto-generate promotional images and UI wireframes
-9. All deliverables saved in one folder, ready to share
+9. Export the final document to Word (.docx) with diagrams embedded inline
+10. All deliverables saved in one folder, ready to share
 ```
 
 ## Project Structure
@@ -93,7 +95,8 @@ doc-forge/
 ├── skill/SKILL.md              # Skill definition (conversation flow + tool invocation)
 ├── scripts/
 │   ├── plantuml-render.js      # PlantUML encoding + rendering (PNG/SVG/PDF)
-│   └── image-generate.js       # Multi-model image generation
+│   ├── image-generate.js       # Multi-model image generation
+│   └── md-to-word.js           # Markdown → Word (.docx) with embedded diagram images
 ├── templates/
 │   ├── doc-template.md         # Document section structure template
 │   └── plantuml-prompts.md     # PlantUML generation prompt templates
@@ -114,6 +117,7 @@ Core pipeline is fully functional.
 - [x] Multi-model image generation (gpt-image-1 / dall-e-3 / dall-e-2)
 - [x] Unified output directory with timestamped versions
 - [x] Incremental update support
+- [ ] Word export — Markdown to .docx with PlantUML diagrams embedded inline
 - [ ] SDLC Mode — problem definition & feasibility analysis for non-technical users
 - [ ] Database schema design (interactive field definition + SQL export)
 - [ ] PPT report generation
