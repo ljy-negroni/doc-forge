@@ -305,34 +305,65 @@
    ```
    用户选择后，记录为 formats 数组（如 `['png', 'svg', 'pdf']`），后续每种图按此数组循环生成。
 
-1. 参考 `templates/plantuml-prompts.md`，基于文档内容生成以下四种图的 PlantUML 代码，每种图生成后按用户选择的格式逐一执行渲染命令：
+1. 参考 `templates/plantuml-prompts.md`，基于文档内容生成以下四种图的 PlantUML 代码。
 
-> 渲染命令模板（以数据流图 dfd 为例，其他图替换图类型即可）：
->
-> ⚠ 所有路径使用 `.last-run.json` 中记录的绝对路径，确保产物统一输出到同一目录。
+2. **渲染流程**（避免中文路径导致的 `file://` URL 编码问题）：
 
-```bash
-node --input-type=module -e "
-import { downloadDiagram } from 'file://{doc_forge_dir}/scripts/plantuml-render.js';
-const uml = \`{生成的PlantUML代码}\`;
-const formats = [{用户选择的格式数组}];
-const base = '{output_dir}/diagrams/{timestamp}-dfd';
-Promise.all(formats.map(fmt => downloadDiagram(uml, base + '.' + fmt, fmt)
-  .then(p => console.log('✔ dfd (' + fmt + '):', p))
-  .catch(e => console.error('✘ dfd (' + fmt + '):', e.message))
-));
-"
-```
+   **Step 1：创建临时渲染脚本**
+   
+   将所有图表的 PlantUML 代码和渲染逻辑写入一个临时 `.mjs` 文件，保存到 `{doc_forge_dir}/export-diagrams-{timestamp}.mjs`。
+   
+   脚本模板：
+   ```javascript
+   import { downloadDiagram } from './scripts/plantuml-render.js';
+   
+   const OUT = '{output_dir}/diagrams';
+   const TS = '{timestamp}';
+   const formats = [{用户选择的格式数组，如 ['png', 'svg']}];
+   
+   const diagrams = [
+     { name: 'dfd', uml: `{数据流图的PlantUML代码}` },
+     { name: 'usecase', uml: `{用例图的PlantUML代码}` },
+     { name: 'activity', uml: `{活动图的PlantUML代码}` },
+     { name: 'sequence', uml: `{时序图的PlantUML代码}` }
+   ];
+   
+   let success = 0, fail = 0;
+   for (const d of diagrams) {
+     for (const fmt of formats) {
+       const outPath = `${OUT}/${TS}-${d.name}.${fmt}`;
+       try {
+         await downloadDiagram(d.uml, outPath, fmt);
+         console.log(`✔ ${d.name} (${fmt}): ${outPath}`);
+         success++;
+       } catch (e) {
+         console.error(`✘ ${d.name} (${fmt}): ${e.message}`);
+         fail++;
+       }
+     }
+   }
+   console.log(`\n完成：${success} 成功，${fail} 失败`);
+   ```
+   
+   **Step 2：从 doc-forge 目录运行脚本**
+   
+   ```bash
+   cd "{doc_forge_dir}" && node "./export-diagrams-{timestamp}.mjs"
+   ```
+   
+   > ⚠ 必须 `cd` 到 `doc_forge_dir` 再运行，确保 Node.js 能正确解析 `node_modules/` 中的依赖包（如 `plantuml-encoder`）。
+   
+   **Step 3：清理临时文件**
+   
+   ```bash
+   rm "{doc_forge_dir}/export-diagrams-{timestamp}.mjs"
+   ```
 
-**数据流图（dfd）** — 生成代码后执行上述模板（替换图类型为 dfd）
-
-**用例图（usecase）** — 生成代码后执行上述模板（替换图类型为 usecase）
-
-**活动图（activity）** — 生成代码后执行上述模板（替换图类型为 activity）
-
-**时序图（sequence）** — 生成代码后执行上述模板（替换图类型为 sequence）
-
-> ⚠ 不需要 cd 到任何目录，直接在当前工作目录执行即可。脚本中 `file://` 前缀会定位渲染脚本，输出路径使用绝对路径确保产物统一。
+3. 生成的图表类型：
+   - **数据流图（dfd）** — 展示系统数据流向和处理过程
+   - **用例图（usecase）** — 展示用户角色与系统功能的交互
+   - **活动图（activity）** — 展示核心业务流程的执行步骤
+   - **时序图（sequence）** — 展示组件间的时序交互
 
 2. 每张完成后告知路径（以选择 png + svg 为例）：
    ```
